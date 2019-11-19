@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.facechina.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.facechina.entity.UserDO" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_LOGIN_NAME" property="userLoginName" jdbcType="VARCHAR" />
+    <result column="USER_AGE" property="userAge" jdbcType="INTEGER" />
+    <result column="USER_EMAIL" property="userEmail" jdbcType="VARCHAR" />
+    <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR" />
+    <result column="USER_SALT" property="userSalt" jdbcType="VARCHAR" />
+    <result column="USER_STATE" property="userState" jdbcType="INTEGER" />
+    <result column="USER_CREATETIME" property="userCreatetime" jdbcType="DATE" />
+    <result column="USER_LASTTIME" property="userLasttime" jdbcType="DATE" />
+    <result column="USER_LOGIN_COUNT" property="userLoginCount" jdbcType="INTEGER" />
+    <result column="USER_ROLE_ID" property="userRoleId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, USER_NAME, USER_LOGIN_NAME, USER_AGE, USER_EMAIL, USER_PASSWORD, USER_SALT, 
+    USER_STATE, USER_CREATETIME, USER_LASTTIME, USER_LOGIN_COUNT, USER_ROLE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from USER
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from USER
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.facechina.entity.UserDO" >
+    insert into USER (ID, USER_ID, USER_NAME, 
+      USER_LOGIN_NAME, USER_AGE, USER_EMAIL, 
+      USER_PASSWORD, USER_SALT, USER_STATE, 
+      USER_CREATETIME, USER_LASTTIME, USER_LOGIN_COUNT, 
+      USER_ROLE_ID)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{userLoginName,jdbcType=VARCHAR}, #{userAge,jdbcType=INTEGER}, #{userEmail,jdbcType=VARCHAR}, 
+      #{userPassword,jdbcType=VARCHAR}, #{userSalt,jdbcType=VARCHAR}, #{userState,jdbcType=INTEGER}, 
+      #{userCreatetime,jdbcType=DATE}, #{userLasttime,jdbcType=DATE}, #{userLoginCount,jdbcType=INTEGER}, 
+      #{userRoleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.facechina.entity.UserDO" >
+    insert into USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="userName != null" >
+        USER_NAME,
+      </if>
+      <if test="userLoginName != null" >
+        USER_LOGIN_NAME,
+      </if>
+      <if test="userAge != null" >
+        USER_AGE,
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL,
+      </if>
+      <if test="userPassword != null" >
+        USER_PASSWORD,
+      </if>
+      <if test="userSalt != null" >
+        USER_SALT,
+      </if>
+      <if test="userState != null" >
+        USER_STATE,
+      </if>
+      <if test="userCreatetime != null" >
+        USER_CREATETIME,
+      </if>
+      <if test="userLasttime != null" >
+        USER_LASTTIME,
+      </if>
+      <if test="userLoginCount != null" >
+        USER_LOGIN_COUNT,
+      </if>
+      <if test="userRoleId != null" >
+        USER_ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginName != null" >
+        #{userLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAge != null" >
+        #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userSalt != null" >
+        #{userSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null" >
+        #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userCreatetime != null" >
+        #{userCreatetime,jdbcType=DATE},
+      </if>
+      <if test="userLasttime != null" >
+        #{userLasttime,jdbcType=DATE},
+      </if>
+      <if test="userLoginCount != null" >
+        #{userLoginCount,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null" >
+        #{userRoleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.facechina.entity.UserDO" >
+    update USER
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userLoginName != null" >
+        USER_LOGIN_NAME = #{userLoginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userAge != null" >
+        USER_AGE = #{userAge,jdbcType=INTEGER},
+      </if>
+      <if test="userEmail != null" >
+        USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userSalt != null" >
+        USER_SALT = #{userSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null" >
+        USER_STATE = #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userCreatetime != null" >
+        USER_CREATETIME = #{userCreatetime,jdbcType=DATE},
+      </if>
+      <if test="userLasttime != null" >
+        USER_LASTTIME = #{userLasttime,jdbcType=DATE},
+      </if>
+      <if test="userLoginCount != null" >
+        USER_LOGIN_COUNT = #{userLoginCount,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null" >
+        USER_ROLE_ID = #{userRoleId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.facechina.entity.UserDO" >
+    update USER
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_LOGIN_NAME = #{userLoginName,jdbcType=VARCHAR},
+      USER_AGE = #{userAge,jdbcType=INTEGER},
+      USER_EMAIL = #{userEmail,jdbcType=VARCHAR},
+      USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      USER_SALT = #{userSalt,jdbcType=VARCHAR},
+      USER_STATE = #{userState,jdbcType=INTEGER},
+      USER_CREATETIME = #{userCreatetime,jdbcType=DATE},
+      USER_LASTTIME = #{userLasttime,jdbcType=DATE},
+      USER_LOGIN_COUNT = #{userLoginCount,jdbcType=INTEGER},
+      USER_ROLE_ID = #{userRoleId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
