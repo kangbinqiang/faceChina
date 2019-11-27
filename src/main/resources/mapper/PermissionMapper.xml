@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="test.IDao.PermissionDOMapper" >
+  <resultMap id="BaseResultMap" type="test.domain.PermissionDO" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="PERMISSION_ID" property="permissionId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="test.domain.PermissionDOWithBLOBs" extends="BaseResultMap" >
+    <result column="PERMISSION_PARENTS_ID" property="permissionParentsId" jdbcType="VARBINARY" />
+    <result column="PERMISSION_NAME" property="permissionName" jdbcType="VARBINARY" />
+    <result column="PERMISSION_DESCRIPTION" property="permissionDescription" jdbcType="VARBINARY" />
+    <result column="PERMISSION_VALUE" property="permissionValue" jdbcType="VARBINARY" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PERMISSION_ID
+  </sql>
+  <sql id="Blob_Column_List" >
+    PERMISSION_PARENTS_ID, PERMISSION_NAME, PERMISSION_DESCRIPTION, PERMISSION_VALUE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from PERMISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from PERMISSION
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="test.domain.PermissionDOWithBLOBs" >
+    insert into PERMISSION (ID, PERMISSION_ID, PERMISSION_PARENTS_ID, 
+      PERMISSION_NAME, PERMISSION_DESCRIPTION, 
+      PERMISSION_VALUE)
+    values (#{id,jdbcType=INTEGER}, #{permissionId,jdbcType=VARCHAR}, #{permissionParentsId,jdbcType=VARBINARY}, 
+      #{permissionName,jdbcType=VARBINARY}, #{permissionDescription,jdbcType=VARBINARY}, 
+      #{permissionValue,jdbcType=VARBINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="test.domain.PermissionDOWithBLOBs" >
+    insert into PERMISSION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="permissionId != null" >
+        PERMISSION_ID,
+      </if>
+      <if test="permissionParentsId != null" >
+        PERMISSION_PARENTS_ID,
+      </if>
+      <if test="permissionName != null" >
+        PERMISSION_NAME,
+      </if>
+      <if test="permissionDescription != null" >
+        PERMISSION_DESCRIPTION,
+      </if>
+      <if test="permissionValue != null" >
+        PERMISSION_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="permissionId != null" >
+        #{permissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionParentsId != null" >
+        #{permissionParentsId,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionDescription != null" >
+        #{permissionDescription,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionValue != null" >
+        #{permissionValue,jdbcType=VARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="test.domain.PermissionDOWithBLOBs" >
+    update PERMISSION
+    <set >
+      <if test="permissionId != null" >
+        PERMISSION_ID = #{permissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionParentsId != null" >
+        PERMISSION_PARENTS_ID = #{permissionParentsId,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionName != null" >
+        PERMISSION_NAME = #{permissionName,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionDescription != null" >
+        PERMISSION_DESCRIPTION = #{permissionDescription,jdbcType=VARBINARY},
+      </if>
+      <if test="permissionValue != null" >
+        PERMISSION_VALUE = #{permissionValue,jdbcType=VARBINARY},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="test.domain.PermissionDOWithBLOBs" >
+    update PERMISSION
+    set PERMISSION_ID = #{permissionId,jdbcType=VARCHAR},
+      PERMISSION_PARENTS_ID = #{permissionParentsId,jdbcType=VARBINARY},
+      PERMISSION_NAME = #{permissionName,jdbcType=VARBINARY},
+      PERMISSION_DESCRIPTION = #{permissionDescription,jdbcType=VARBINARY},
+      PERMISSION_VALUE = #{permissionValue,jdbcType=VARBINARY}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="test.domain.PermissionDO" >
+    update PERMISSION
+    set PERMISSION_ID = #{permissionId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
