@@ -1,20 +1,14 @@
-package test.IDao;
+package com.facechina.mapper;
 
-import test.domain.PermissionDO;
-import test.domain.PermissionDOWithBLOBs;
+import com.facechina.entity.PermissionDO;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
-public interface PermissionDOMapper {
-    int deleteByPrimaryKey(Integer id);
+import java.util.List;
 
-    int insert(PermissionDOWithBLOBs record);
+@Component
+public interface PermissionMapper {
 
-    int insertSelective(PermissionDOWithBLOBs record);
+    List<PermissionDO> getPermissionByPermissionId(@Param("permissionId") String permissionId);
 
-    PermissionDOWithBLOBs selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(PermissionDOWithBLOBs record);
-
-    int updateByPrimaryKeyWithBLOBs(PermissionDOWithBLOBs record);
-
-    int updateByPrimaryKey(PermissionDO record);
 }

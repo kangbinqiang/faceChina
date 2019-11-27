@@ -1,6 +1,9 @@
 package com.facechina.service;
 
+import com.facechina.controller.mo.UserMO;
 import com.facechina.entity.UserDO;
+
+import java.util.List;
 
 /**
  * Description:
@@ -9,5 +12,14 @@ import com.facechina.entity.UserDO;
  */
 public interface UserService {
 
-    UserDO selectByPrimaryKey(Integer id);
+
+    UserDO getUserByName(String userName);
+
+    List<String> getRolesByUserName(String username);
+
+    List<String> getPermissionByUserName(String username);
+
+    void addUserDO(UserMO userMO);
+
+    void editPassword(UserMO userMO);
 }

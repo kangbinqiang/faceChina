@@ -1,18 +1,16 @@
 package com.facechina.mapper;
 
 import com.facechina.entity.UserDO;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface UserMapper {
 
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(UserDO record);
+    UserDO getUserByName(@Param("userName") String userName);
 
-    int insertSelective(UserDO record);
+    void addUser(UserDO userDO);
 
-    UserDO selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(UserDO record);
-
-    int updateByPrimaryKey(UserDO record);
+    void editPassword(UserDO userDO);
 }

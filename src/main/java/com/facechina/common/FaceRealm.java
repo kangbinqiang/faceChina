@@ -1,14 +1,21 @@
 package com.facechina.common;
 
+import com.facechina.entity.UserDO;
+import com.facechina.service.RedisService;
+import com.facechina.service.UserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Description:
@@ -17,29 +24,52 @@ import java.util.Set;
  */
 public class FaceRealm extends AuthorizingRealm {
 
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RedisService redisService;
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String username = (String) SecurityUtils.getSubject().getPrincipal();
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        Set<String> stringSet = new HashSet<>();
-        stringSet.add("user:show");
-        stringSet.add("user:admin");
-        info.setStringPermissions(stringSet);
-        return info;
+        //获取用户名
+        String username = (String) principalCollection.getPrimaryPrincipal();
+        //授权信息
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        //给该用户设置角色
+        authorizationInfo.setRoles(new HashSet<>(userService.getRolesByUserName(username)));
+        //给用户设置权限
+        authorizationInfo.setStringPermissions(new HashSet<>(userService.getPermissionByUserName(username)));
+        return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("-------身份认证方法--------");
+        //根据token获取用户名
         String userName = (String) authenticationToken.getPrincipal();
-        String userPwd = new String((char[]) authenticationToken.getCredentials());
-        //根据用户名从数据库获取密码
-        String password = "123";
-        if (userName == null) {
-            throw new AccountException("用户名不正确");
-        } else if (!userPwd.equals(password )) {
-            throw new AccountException("密码不正确");
+        UserDO user = null;
+        //根据用户名先从redis中查找
+        user = (UserDO) redisService.get(userName);
+        if (user != null) {
+            //把当前的用户放到session中
+            SecurityUtils.getSubject().getSession().setAttribute("user", user);
+            //传入用户名和密码进行身份认证，并返回认证信息
+            AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getSalt()),"faceRealm");
+            return authinfo;
         }
-        return new SimpleAuthenticationInfo(userName, password,getName());
+        else {
+            user = userService.getUserByName(userName);
+            if (user != null) {
+                //把当前的用户放到session中
+                SecurityUtils.getSubject().getSession().setAttribute("user", user);
+                //将用户存到redis中
+                redisService.set(userName,user);
+                //传入用户名和密码进行身份认证，并返回认证信息
+                AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getSalt()),"faceRealm");
+                return authinfo;
+            } else {
+                return null;
+            }
+        }
     }
 }

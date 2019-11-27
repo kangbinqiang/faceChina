@@ -2,8 +2,6 @@ package com.facechina.entity;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class UserDO {
 
@@ -13,24 +11,10 @@ public class UserDO {
 
     private String userName;
 
-    private String userLoginName;
-
-    private Integer userAge;
-
-    private String userEmail;
-
     private String userPassword;
 
-    private String userSalt;
+    private String salt;
 
-    private Integer userState;
-
-    private Date userCreatetime;
-
-    private Date userLasttime;
-
-    private Integer userLoginCount;
-
-    private String userRoleId;
+    private String roleId;
 
 }

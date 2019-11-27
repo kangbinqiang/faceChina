@@ -1,19 +1,14 @@
-package test.IDao;
+package com.facechina.mapper;
 
-import test.domain.RoleDO;
+import com.facechina.entity.RoleDO;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
-public interface RoleDOMapper {
-    int deleteByPrimaryKey(Integer id);
+import java.util.List;
 
-    int insert(RoleDO record);
+@Component
+public interface RoleMapper {
 
-    int insertSelective(RoleDO record);
+    List<RoleDO> getRoleByRoleId(@Param("roleId") String roleId);
 
-    RoleDO selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(RoleDO record);
-
-    int updateByPrimaryKeyWithBLOBs(RoleDO record);
-
-    int updateByPrimaryKey(RoleDO record);
 }

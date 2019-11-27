@@ -10,8 +10,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 /**
- * Description:
- * Author:
+ * Description:swagger配置
+ * Author:kbq
  * Date: 2019-11-19 16:14
  */
 @Configuration
