@@ -1,16 +1,9 @@
 package com.facechina.mapper;
 
 import com.facechina.entity.UserDO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
-public interface UserMapper {
+@Repository
+public interface UserMapper extends BaseMapper<UserDO>{
 
-
-    UserDO getUserByName(@Param("userName") String userName);
-
-    void addUser(UserDO userDO);
-
-    void editPassword(UserDO userDO);
 }

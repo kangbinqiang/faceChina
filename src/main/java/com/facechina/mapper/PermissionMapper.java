@@ -1,14 +1,10 @@
 package com.facechina.mapper;
 
 import com.facechina.entity.PermissionDO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface PermissionMapper extends BaseMapper<PermissionDO>{
 
-@Component
-public interface PermissionMapper {
-
-    List<PermissionDO> getPermissionByPermissionId(@Param("permissionId") String permissionId);
 
 }

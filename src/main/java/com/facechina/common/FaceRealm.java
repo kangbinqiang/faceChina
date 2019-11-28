@@ -54,7 +54,7 @@ public class FaceRealm extends AuthorizingRealm {
             //把当前的用户放到session中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);
             //传入用户名和密码进行身份认证，并返回认证信息
-            AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getSalt()),"faceRealm");
+            AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getUserSalt()),"faceRealm");
             return authinfo;
         }
         else {
@@ -65,7 +65,7 @@ public class FaceRealm extends AuthorizingRealm {
                 //将用户存到redis中
                 redisService.set(userName,user);
                 //传入用户名和密码进行身份认证，并返回认证信息
-                AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getSalt()),"faceRealm");
+                AuthenticationInfo authinfo = new SimpleAuthenticationInfo(user.getUserName(), user.getUserPassword(), ByteSource.Util.bytes(user.getUserSalt()),"faceRealm");
                 return authinfo;
             } else {
                 return null;

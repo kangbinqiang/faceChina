@@ -1,58 +1,47 @@
 package com.facechina.config;
 
-import org.quartz.Scheduler;
-import org.quartz.ee.servlet.QuartzInitializerListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
  * 定时任务配置
- *
  */
 @Configuration
 public class QuartzConfig {
 
-    @Autowired
-    private FaceChinaJobFactory faceChinaJobFactory;
-
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean() throws IOException {
+    public SchedulerFactoryBean scheduler(DataSource dataSource) {
+
+        //quartz参数
+        Properties prop = new Properties();
+        //配置实例
+        //prop.put("org.quartz.scheduler.instanceName", "MyScheduler");//实例名称
+        prop.put("org.quartz.scheduler.instanceId", "AUTO");
+        //线程池配置
+        prop.put("org.quartz.threadPool.threadCount", "5");
+        //JobStore配置
+        prop.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
+        prop.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
+
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
-//        factory.setQuartzProperties(quartzProperties());
-        // 自定义Job Factory，用于Spring注入
-        factory.setJobFactory(faceChinaJobFactory);
+        factory.setDataSource(dataSource);
+        factory.setQuartzProperties(prop);
+        factory.setSchedulerName("MyScheduler");//数据库中存储的名字
+        //QuartzScheduler 延时启动，应用启动5秒后 QuartzScheduler 再启动
+        factory.setStartupDelay(5);
+
+        //factory.setApplicationContextSchedulerContextKey("applicationContextKey");
+        //可选，QuartzScheduler 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了
+        factory.setOverwriteExistingJobs(true);
+        //设置自动启动，默认为true
+        factory.setAutoStartup(true);
+
         return factory;
     }
-//    @Bean
-//    public Properties quartzProperties() throws IOException {
-//        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-//        propertiesFactoryBean.setLocation(new ClassPathResource("/quartz.properties"));
-//        //在quartz.properties中的属性被读取并注入后再初始化对象
-//        propertiesFactoryBean.afterPropertiesSet();
-//        return propertiesFactoryBean.getObject();
-//    }
-    /*
-     * quartz初始化监听器
-     */
-    @Bean
-    public QuartzInitializerListener executorListener() {
-        return new QuartzInitializerListener();
-    }
-    /*
-     * 通过SchedulerFactoryBean获取Scheduler的实例
-     */
-    @Bean
-    public Scheduler scheduler() throws IOException {
-        return schedulerFactoryBean().getScheduler();
-    }
-
 }
 
 

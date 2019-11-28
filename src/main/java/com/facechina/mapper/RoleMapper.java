@@ -1,14 +1,9 @@
 package com.facechina.mapper;
 
 import com.facechina.entity.RoleDO;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-@Component
-public interface RoleMapper {
-
-    List<RoleDO> getRoleByRoleId(@Param("roleId") String roleId);
+@Repository
+public interface RoleMapper extends BaseMapper<RoleDO>{
 
 }

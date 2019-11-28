@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDO getUserByName(String userName) {
-        return userMapper.getUserByName(userName);
+        Example example = new Example(UserDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userName", userName);
+        return userMapper.selectOneByExample(example);
     }
 
     /**
@@ -54,9 +58,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> getRolesByUserName(String username) {
         List<String> result = new ArrayList<>();
-        UserDO userDO = userMapper.getUserByName(username);
+        UserDO userDO = getUserByName(username);
         if (userDO != null) {
-            List<RoleDO> list = roleMapper.getRoleByRoleId(userDO.getRoleId());
+            Example example = new Example(RoleDO.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("roleId", userDO.getUserRoleId());
+            List<RoleDO> list = roleMapper.selectByExample(example);
             if (CollectionUtils.isEmpty(list)) {
                 return result;
             }
@@ -75,16 +82,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> getPermissionByUserName(String username) {
         List<String> result = new ArrayList<>();
-        UserDO userDO = userMapper.getUserByName(username);
+        UserDO userDO = getUserByName(username);
         if (userDO != null) {
             //查找角色
-            List<RoleDO> roleDOList = roleMapper.getRoleByRoleId(userDO.getRoleId());
+            List<RoleDO> roleDOList = getRoleList(userDO.getUserRoleId());
             if (CollectionUtils.isEmpty(roleDOList)) {
                 return result;
             }
             for (RoleDO roleDO : roleDOList) {
                 //查找权限
-                List<PermissionDO> permissionDOList = permissionMapper.getPermissionByPermissionId(roleDO.getPermissionId());
+                Example example = new Example(PermissionDO.class);
+                Example.Criteria criteria = example.createCriteria();
+                criteria.andEqualTo("permissionId", roleDO.getPermissionId());
+                List<PermissionDO> permissionDOList = permissionMapper.selectByExample(example);
                 if (CollectionUtils.isEmpty(permissionDOList)) {
                     return result;
                 }
@@ -94,6 +104,15 @@ public class UserServiceImpl implements UserService {
             }
         }
         return result;
+    }
+
+
+    public List<RoleDO> getRoleList(String roleId) {
+        Example example = new Example(RoleDO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("roleId", roleId);
+        List<RoleDO> roleDOList = roleMapper.selectByExample(example);
+        return roleDOList;
     }
 
 
@@ -109,10 +128,11 @@ public class UserServiceImpl implements UserService {
         UserDO userDO = new UserDO();
         userDO.setUserId(UUID.randomUUID().toString().replaceAll("-",""));
         userDO.setUserName(userMO.getUserName());
+        userDO.setUserLoginName("login"+userMO.getUserName());
         userDO.setUserPassword(password);
-        userDO.setSalt(salt);
-        userDO.setRoleId("admin");
-        userMapper.addUser(userDO);
+        userDO.setUserSalt(salt);
+        userDO.setUserRoleId("admin");
+        userMapper.insertSelective(userDO);
     }
 
 
@@ -130,10 +150,13 @@ public class UserServiceImpl implements UserService {
             UserDO newUser = new UserDO();
             newUser.setUserId(userDO.getUserId());
             newUser.setUserName(userDO.getUserName());
-            newUser.setRoleId(userDO.getRoleId());
+            newUser.setUserRoleId(userDO.getUserRoleId());
             newUser.setUserPassword(password);
-            newUser.setSalt(salt);
-            userMapper.editPassword(newUser);
+            newUser.setUserSalt(salt);
+            Example example = new Example(UserDO.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("userId", userDO.getUserId());
+            userMapper.updateByExample(newUser,example);
         }
     }
 }

@@ -2,6 +2,8 @@ package com.facechina.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+
 /**
  * Description:
  * Author:
@@ -9,4 +11,7 @@ import lombok.Data;
  */
 @Data
 public class BaseDO {
+
+    @Column(name = "ID")
+    private Integer id;
 }
