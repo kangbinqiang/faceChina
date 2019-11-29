@@ -1,4 +1,4 @@
-package com.facechina.job;
+package com.facechina.entity;
 
 import io.swagger.models.auth.In;
 import lombok.Data;
@@ -11,10 +11,10 @@ import java.util.Date;
  * Date: 2019-11-28 17:19
  */
 @Data
-public class ScheduleJobLog {
+public class ScheduleJobLogDO {
 
 
-    private Long jobId;
+    private String jobId;
 
     private String beanName;
 

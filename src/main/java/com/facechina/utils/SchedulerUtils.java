@@ -12,7 +12,7 @@ public class SchedulerUtils {
      */
     public static void createJob(Scheduler scheduler, ScheduleJob scheduleJob) {
         try {
-            Long jobId = scheduleJob.getJobId();
+            String jobId = scheduleJob.getJobId();
             //创建Job对象
             JobDetail job = JobBuilder.newJob(QuartzJob.class).withIdentity("JOB_" + jobId).build();
             //获取cron表达式 并创建对象
@@ -42,7 +42,7 @@ public class SchedulerUtils {
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
                 .withMisfireHandlingInstructionDoNothing();
 
-        Long jobId = scheduleJob.getJobId();
+        String jobId = scheduleJob.getJobId();
 
         try {
             //拿到原有的trigger
@@ -61,7 +61,7 @@ public class SchedulerUtils {
     /**
      * 删除任务
      */
-    public static void deleteJob(Scheduler scheduler, Long jobId) {
+    public static void deleteJob(Scheduler scheduler, String jobId) {
         try {
             scheduler.deleteJob(JobKey.jobKey("JOB_" + jobId));
         } catch (SchedulerException e) {
@@ -72,7 +72,7 @@ public class SchedulerUtils {
     /**
      * 恢复任务
      */
-    public static void resumeJob(Scheduler scheduler, Long jobId) {
+    public static void recoverJob(Scheduler scheduler, String jobId) {
         try {
             scheduler.resumeJob(JobKey.jobKey("JOB_" + jobId));
         } catch (SchedulerException e) {
@@ -83,7 +83,7 @@ public class SchedulerUtils {
     /**
      * 立即执行定时任务
      */
-    public static void execute(Scheduler scheduler, Long jobId) {
+    public static void execute(Scheduler scheduler, String jobId) {
         try {
             //只执行一次并且不会改变任务的状态
             scheduler.triggerJob(JobKey.jobKey("JOB_" + jobId));
@@ -98,7 +98,7 @@ public class SchedulerUtils {
      * @param scheduler
      * @param jobId
      */
-    public static void pauseJob(Scheduler scheduler, Long jobId) {
+    public static void pauseJob(Scheduler scheduler, String jobId) {
         try {
             scheduler.pauseJob(JobKey.jobKey("JOB_" + jobId));
         } catch (SchedulerException e) {

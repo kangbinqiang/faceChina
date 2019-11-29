@@ -30,7 +30,7 @@ public class QuartzConfig {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setQuartzProperties(prop);
-        factory.setSchedulerName("MyScheduler");//数据库中存储的名字
+        factory.setSchedulerName("FaceChinaScheduler");//数据库中存储的名字
         //QuartzScheduler 延时启动，应用启动5秒后 QuartzScheduler 再启动
         factory.setStartupDelay(5);
 
