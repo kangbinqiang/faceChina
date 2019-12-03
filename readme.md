@@ -11,28 +11,7 @@ Spring-Boot2.0 + Nacos注册中心版：https://gitee.com/52itstyle/spring-boot-
 ### 银联
 电脑支付、WAP支付
 
-
-## 支付文档
-
-地址：http://localhost:8080/spring-boot-pay/swagger-ui.html
-
-配置说明：https://blog.52itstyle.vip/archives/1473/
-
-![支付文档](https://git.oschina.net/uploads/images/2017/0828/172331_6537f916_87650.png "zhifuAPI.png")
-
-## 演示界面
-
-部分功能完善中！！！
-
-![模拟登陆](https://git.oschina.net/uploads/images/2017/0802/191105_d59172ca_87650.png "0.png")
-
-![模拟首页](https://git.oschina.net/uploads/images/2017/0802/191116_04d62422_87650.png "1.png")
-
-![模拟支付](https://git.oschina.net/uploads/images/2017/0802/191125_6958b9b3_87650.png "2.png")
-
 ## 支付宝
-
-签约功能列表：
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2018/1022/174516_1f8bc13b_87650.png "二维码支付.png")
 
