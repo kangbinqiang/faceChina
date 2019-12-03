@@ -29,8 +29,8 @@ public class FaceChinaController extends BaseController {
     @ApiOperation(value = "新增任务")
     @PostMapping("/add")
     ResponseMO addJob(@RequestBody @Validated ScheduleJob scheduleJob) throws SchedulerException {
-        String result = scheduleJobService.addJob(scheduleJob);
-        return success(result);
+        String jobId = scheduleJobService.addJob(scheduleJob);
+        return success(jobId);
     }
 
 
@@ -64,7 +64,7 @@ public class FaceChinaController extends BaseController {
      * 删除定时任务
      */
     @DeleteMapping("/delete")
-    @ApiOperation(value = "批量删除任务")
+    @ApiOperation(value = "删除任务")
     public ResponseMO deleteJob(@RequestParam String jobId) throws SchedulerException {
         scheduleJobService.deleteJob(jobId);
         return success("删除任务成功");
@@ -73,7 +73,7 @@ public class FaceChinaController extends BaseController {
     /**
      * 暂停定时任务
      */
-    @DeleteMapping("/pause")
+    @PostMapping("/pause")
     @ApiOperation(value = "暂停任务")
     public ResponseMO pauseJob(@RequestParam String jobId) throws SchedulerException {
         scheduleJobService.pauseJob(jobId);
@@ -84,7 +84,7 @@ public class FaceChinaController extends BaseController {
     /**
      * 恢复定时任务
      */
-    @DeleteMapping("/recover")
+    @PostMapping("/recover")
     @ApiOperation(value = "恢复任务")
     public ResponseMO recoverJob(@RequestParam String jobId) throws SchedulerException {
         scheduleJobService.recoverJob(jobId);
@@ -92,6 +92,4 @@ public class FaceChinaController extends BaseController {
     }
 
 
-
-
-    }
+}
